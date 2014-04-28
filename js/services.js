@@ -1,0 +1,67 @@
+'use strict';
+
+/* Services */
+
+
+// Demonstrate how to register services
+// In this case it is a simple value service.
+var collegeService = angular.module('myApp.services', ['ngResource']);
+
+ collegeService.value('version', '0.1');
+  
+  
+//  var phonecatServices = angular.module('phonecatServices', ['ngResource']);
+ 
+collegeService.factory('College', ['$resource',
+  function($resource){
+    return $resource('http://localhost/searchdemoproject/api/index.php/api/college/colleges/format/json', {}, {
+      query: {method:'GET', isArray:true}
+    });
+  }]);
+  
+collegeService.factory('DeleteCollege', ['$resource','$http',
+  function($resource, $http){
+	/* 	$http.post("", data).success(function(data, status, headers) {
+			alert('college deleted');
+		}); */
+		return function(data, callback) {
+			$http.post('http://localhost/searchdemoproject/api/index.php/api/college/deletecollege/format/json', data).success(function(data, status, headers) {
+//				alert('testing');
+				callback();
+			});
+		};
+  }]);
+
+collegeService.factory('AddCollege', ['$resource','$http',
+  function($resource, $http){
+	/* 	$http.post("", data).success(function(data, status, headers) {
+			alert('college deleted');
+		}); */
+		return function(data, callback) {
+			$http.post('http://localhost/searchdemoproject/api/index.php/api/college/addcollege/format/json', data).success(function(data, status, headers) {
+//				alert('testing');
+				callback();
+			});
+		};
+  }]);
+  
+/* collegeService.factory('InsertCollege', ['$http', '$rootScope', function($http, $rootScope) {
+  var college = [];
+ 
+  return {
+    
+    savecollege: function($params) {
+      return $http({
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        url: base_url + 'json/save_college',
+        method: "POST",
+        data: $params,
+      })
+        .success(function(addData) {
+          college = addData;
+          $rootScope.$broadcast('handleSharedBooks',college);
+        });
+    }
+  };
+}]); */
+
