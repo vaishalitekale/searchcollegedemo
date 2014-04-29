@@ -19,8 +19,8 @@ class College extends REST_Controller
         }
         // Display all colleges
 		$this->load->database();
-		
 		$query = $this->db->query('SELECT id,name,address FROM colleges WHERE id='.$this->get('id'));
+		
 		$row = $query->row_array();
 		
 		$this->response($row);
@@ -63,27 +63,20 @@ class College extends REST_Controller
 		$message = array("message" => "Added Successfuly");
 		$this->response($message, 200);
     }
-	/*public function update_college()
+	function searchcollege_post()
     {
-	    if(!$this->get('id'))
-        {
-        	$this->response(NULL, 400);
-        }
-        // Display all colleges
 		$this->load->database();
-		$data = array(
-               'name' => $name,
-               'address' => $address
-            );
-
-		$query = $this->db->where('id', $id);
-		$query = $this->db->update('colleges', $data); 
-
+		$sql = "SELECT * FROM colleges WHERE name = '".$this->post('name')."'";
+        $query = $this->db->query($sql);
+        $data = $query->result();
 		
-		$row = $query->row_array();
-		
-		$this->response($row);
-    } */
+        if($data) {
+            $this->response($data, 200);
+        } else {
+            $this->response(array('error' => 'Couldn\'t find any College name '.$letter.'!'), 404);
+        }
+    }
+	
 	
 	
 	

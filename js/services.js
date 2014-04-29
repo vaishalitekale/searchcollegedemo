@@ -34,16 +34,31 @@ collegeService.factory('DeleteCollege', ['$resource','$http',
 
 collegeService.factory('AddCollege', ['$resource','$http',
   function($resource, $http){
-	/* 	$http.post("", data).success(function(data, status, headers) {
-			alert('college deleted');
-		}); */
 		return function(data, callback) {
 			$http.post('http://localhost/searchdemoproject/api/index.php/api/college/addcollege/format/json', data).success(function(data, status, headers) {
-//				alert('testing');
 				callback();
 			});
 		};
   }]);
+  collegeService.factory('SearchCollege', ['$resource','$http',
+  function($resource, $http){
+		return function(data, callback) {
+			$http.post('http://localhost/searchdemoproject/api/index.php/api/college/searchcollege/format/json', data).success(function(data, status, headers) {
+				callback();
+			});
+		};
+  }]);
+
+ 
+  
+  /* collegeService.factory('SearchCollege', ['$resource',
+  function($resource){
+    return $resource('http://localhost/searchdemoproject/api/index.php/api/college/searchcollege/format/json', {}, {
+      query: {method:'GET', isArray:true}
+    });
+  }]); */
+  
+  
   
 /* collegeService.factory('InsertCollege', ['$http', '$rootScope', function($http, $rootScope) {
   var college = [];
