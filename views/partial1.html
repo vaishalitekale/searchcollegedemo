@@ -16,7 +16,10 @@
 <p>Data Displayed After Search</p>
 
 <ul>
-	{{collegedata1}}
-	
+	<li ng-repeat="d in collegedata1">
+		
+		<span>{{d.name}} --- </span>
+		<span>{{d.address}} --- </span>
+	</li>	
 	
 </ul>

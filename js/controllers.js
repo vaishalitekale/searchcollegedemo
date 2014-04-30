@@ -3,18 +3,28 @@
 /* Controllers */
 
 angular.module('myApp.controllers', [])
-  .controller('MyCtrl1', ["$scope", "College", "DeleteCollege", "AddCollege","SearchCollege", function($scope, College, DeleteCollege, AddCollege, SearchCollege) {
+  .controller('MyCtrl1', ["$scope", "College", "DeleteCollege", "AddCollege","SearchCollege", "CollegeService", function($scope, College, DeleteCollege, AddCollege, SearchCollege, CollegeService) {
 	$scope.name = "Vaishali";
 	$scope.collegedata = [];
 	
+	$scope.updateCollegeModel = function(data) {
+		$scope.collegedata = [];
+		for(var i =0; i< data.length; i++) {
+			$scope.collegedata.push(data[i]);
+		}
+	};
+	
 	$scope.getCollegeData = function() {
 		$scope.collegedata = [];
-		College.query(function(data) {
+		/* College.query(function(data) {
 			console.log(data);
 			for(var i =0; i< data.length; i++) {
 				$scope.collegedata.push(data[i]);
 			}
-		});
+		}); */
+		
+		CollegeService.getColleges.query($scope.updateCollegeModel);
+		//m.query($scope.updateCollegeModel);
 	};
 	$scope.getCollegeData();
 	
@@ -26,7 +36,8 @@ angular.module('myApp.controllers', [])
 		var data = {};
 		data.id = id;
 		
-		DeleteCollege(data, $scope.getCollegeData);
+		CollegeService.deleteCollege(data, $scope.updateCollegeModel);
+		//DeleteCollege(data, $scope.getCollegeData);
 		
 	}
 	$scope.pushCollegeInfo = function(college) {
@@ -40,16 +51,21 @@ angular.module('myApp.controllers', [])
 		$scope.collegedata1 = [];
 		data.name = $scope.collegename.name;
 		
-		SearchCollege(data, $scope.getCollegeData);
-		SearchCollege.query(function(data) {
-			alert("HI");
+		//SearchCollege(data, $scope.getCollegeData);
+/* 		SearchCollege.query(function(data) {
 			for(var i =0; i< data.length; i++) {
-				
 				$scope.collegedata1.push(data[i]);
 			}
 		});
+ */		/* 
+		SearchCollege(data, function(data) {
+			console.log(data);
+			for(var i =0; i< data.length; i++) {
+				$scope.collegedata1.push(data[i]);
+			}
+		}); */
 		
-		
+		CollegeService.searchCollege(data, $scope.updateCollegeModel);
 	}	
 }
   ])
@@ -57,4 +73,4 @@ angular.module('myApp.controllers', [])
 		
   }]);
 
-  
+  /*DRY - Dont Repeat Yourself*/

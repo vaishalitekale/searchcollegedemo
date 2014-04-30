@@ -11,7 +11,37 @@ var collegeService = angular.module('myApp.services', ['ngResource']);
   
   
 //  var phonecatServices = angular.module('phonecatServices', ['ngResource']);
- 
+collegeService.factory('CollegeService', ['$resource', '$http', function($resource, $http) {
+	var CollegeService = function() {
+		this.getColleges = function() {
+			return $resource('http://localhost/searchdemoproject/api/index.php/api/college/colleges/format/json', {}, {
+				query: {method:'GET', isArray:true}
+			});
+		}();
+		
+		this.searchCollege = function() {
+			return function(data, callback) {
+				$http.post('http://localhost/searchdemoproject/api/index.php/api/college/searchcollege/format/json', data).success(function(data, status, headers) {
+					callback(data);
+				});
+			};
+
+		}();
+		
+		this.deleteCollege = function() {
+			return function(data, callback) {
+				$http.post('http://localhost/searchdemoproject/api/index.php/api/college/deletecollege/format/json', data).success(function(data, status, headers) {
+//					alert('testing');
+					callback();
+				});
+			};
+		}();
+	};
+	
+	return new CollegeService();
+
+}]);
+
 collegeService.factory('College', ['$resource',
   function($resource){
     return $resource('http://localhost/searchdemoproject/api/index.php/api/college/colleges/format/json', {}, {
@@ -44,7 +74,7 @@ collegeService.factory('AddCollege', ['$resource','$http',
   function($resource, $http){
 		return function(data, callback) {
 			$http.post('http://localhost/searchdemoproject/api/index.php/api/college/searchcollege/format/json', data).success(function(data, status, headers) {
-				callback();
+				callback(data);
 			});
 		};
   }]);
